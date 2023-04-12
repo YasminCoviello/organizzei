@@ -1,0 +1,31 @@
+.card-container {
+  background: #FFF;
+  padding: 12px 16px;
+  border-radius: .25rem;
+  width: 100%;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, .1);
+}
+
+.card-container h4 {
+  margin: 0;
+  font-weight: 400;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.card-container p {
+  font-size: 12px;
+  color: #777;
+}
+
+.card-container .actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.blank-btn {
+  width: 16px;
+  height: 16px
+}

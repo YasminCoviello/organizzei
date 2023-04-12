@@ -1,0 +1,15 @@
+.register-label {
+  font-size: 14px;
+}
+
+.register-link {
+  margin-left: 4px;
+}
+
+.button.contained.forgot-password {
+  width: 100%;
+  text-align: right;
+  margin-top: -8px;
+  font-size: 12px;
+  text-decoration: none;
+}

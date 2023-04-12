@@ -1,0 +1,16 @@
+.menu-wrapper {
+  width: 320px;
+  height: 100vh;
+  background: #FFF;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, .1);
+  position: relative;
+  padding: 32px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-wrapper .menu-calendar {
+  margin-top: 24px;
+}

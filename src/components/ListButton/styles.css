@@ -1,0 +1,44 @@
+.list-button-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: .1s ease;
+  border-radius: .25rem;
+}
+
+.list-button-wrapper:hover {
+  background: rgba(0, 0, 0, .025);
+}
+
+.list-button-wrapper .top-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #333;
+  gap: 16px;
+}
+
+.list-button-title {
+  font-weight: 500;
+}
+
+.list-button-description {
+  font-size: 12px;
+  color: #777;
+  width: 80%;
+  text-align: left;
+}
+
+.arrow-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
