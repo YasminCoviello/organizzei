@@ -17,12 +17,12 @@ function Card(props) {
                 className='blank-btn'
               />
             ) : (
-              <button className="button contained">
+              <button className="button contained" onClick={() => props.returnCard(props.id)}>
                 <img src="/images/arrow-left.svg" alt="Seta para esquerda" />
               </button>
             )
         }
-        <button className="button contained">
+        <button className="button contained" onClick={() => props.deleteCard(props.id)}>
           <img src="/images/trash.svg" alt="Lixeira" />
         </button>
 
@@ -33,7 +33,7 @@ function Card(props) {
                 className='blank-btn'
               />
             ) : (
-              <button className="button contained">
+              <button className="button contained" onClick={() => props.advanceCard(props.id)}>
                 <img src="/images/arrow-right.svg" alt="Seta para direita" />
               </button>
             )

@@ -5,6 +5,25 @@
   height: max-content;
 }
 
+.card-column-header {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-column-header h3 {
+  width: 100%;
+}
+
+.card-column-header button {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: .75rem;
+}
+
+
 .card-column.to-do {
   background-color: rgba(0, 168, 255, .05);
 }

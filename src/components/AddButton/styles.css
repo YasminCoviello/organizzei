@@ -1,0 +1,20 @@
+.add-button-wrapper {
+  display: flex;
+  height: max-content;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: .1s ease;
+  border-radius: .25rem;
+  color: #00A8FF;
+}
+
+.add-button-wrapper.right {
+  justify-content: flex-end;
+}
+
+.add-button-wrapper:hover {
+  color: #0086CC;
+}

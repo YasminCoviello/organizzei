@@ -7,8 +7,13 @@
   border: none;
   cursor: pointer;
   position: relative;
-  transition: .1s ease;
+  transition: .25s ease;
   border-radius: .25rem;
+  padding: .5rem;
+}
+
+.list-button-wrapper.selected-true {
+  border-left: 8px solid #00A8FF;
 }
 
 .list-button-wrapper:hover {

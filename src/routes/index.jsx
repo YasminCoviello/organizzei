@@ -3,6 +3,7 @@ import PasswordRecovery from "../pages/PasswordRecovery";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
+import { DateProvider } from "../contexts/date-context";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +20,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <Home />,
-  },
+    element: (
+      <DateProvider>
+        <Home />,
+      </DateProvider>
+    )},
 ]);
 
 export default router;

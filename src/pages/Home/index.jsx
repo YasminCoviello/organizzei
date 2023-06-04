@@ -1,91 +1,99 @@
-import Card from "../../components/Card";
-import CardColumn from "../../components/CardColumn";
+import { useContext, useEffect, useState } from "react";
+import AddButton from "../../components/AddButton";
 import ListButton from "../../components/ListButton";
+import api from "../../modules/api";
 import Menu from "../../partials/Menu";
 import './styles.css';
-
-const todoCards = [
-  { title: "Título do cartão 1", description: "A descrição da atividade, de uma forma um pouco menos resumida 1" },
-  { title: "Título do cartão 2", description: "A descrição da atividade, de uma forma um pouco menos resumida 2" },
-  { title: "Título do cartão 3", description: "A descrição da atividade, de uma forma um pouco menos resumida 3" },
-  { title: "Título do cartão 4", description: "A descrição da atividade, de uma forma um pouco menos resumida 4" },
-];
-
-const inProgressCards = [
-  { title: "Título do cartão 1", description: "A descrição da atividade, de uma forma um pouco menos resumida 1" },
-  { title: "Título do cartão 2", description: "A descrição da atividade, de uma forma um pouco menos resumida 2" },
-  { title: "Título do cartão 3", description: "A descrição da atividade, de uma forma um pouco menos resumida 3" },
-];
-
-const doneCards = [
-  { title: "Título do cartão 1", description: "A descrição da atividade, de uma forma um pouco menos resumida 1" },
-  { title: "Título do cartão 2", description: "A descrição da atividade, de uma forma um pouco menos resumida 2" },
-  { title: "Título do cartão 3", description: "A descrição da atividade, de uma forma um pouco menos resumida 3" },
-  { title: "Título do cartão 4", description: "A descrição da atividade, de uma forma um pouco menos resumida 4" },
-  { title: "Título do cartão 5", description: "A descrição da atividade, de uma forma um pouco menos resumida 5" },
-];
+import { Loading } from "../../components/Loading";
+import { Cards } from "../../partials/Cards";
+import { AddListModal } from "../../components/AddListModal";
+import { DateContext } from "../../contexts/date-context";
 
 function Home() {
+  const { date } = useContext(DateContext);
+
+  const [listId, setListId] = useState(null);
+  const [lists, setLists] = useState(null);
+  const [tasks, setTasks] = useState(null);
+  const [isCreateListModalOpened, setIsCreateListModalOpened] = useState(false);
+  
+  async function fetchLists() {
+    const { data: lists } = await api.get('list');
+
+    setLists(lists);
+  }
+
+  async function fetchTasks() {
+    const { data: cards } = await api.get(`list/${listId}/task?date=${date}`);
+
+    setTasks(cards);
+  }
+
+  function changeList(listId) {
+    setListId(listId);
+  }
+
+  useEffect(() => {
+    fetchLists();
+    fetchTasks();
+  }, []);
+
+  useEffect(() => {
+    fetchTasks();
+  }, [listId, date]);
+
+  useEffect(() => {
+    if(lists && !listId) {
+      const firstListId = lists[0]?.id;
+      setListId(firstListId);
+    }
+  }, [lists]);
+
   return (
     <div className="home">
       <Menu>
+        <div className="lists-header">
+          <h3>
+            Listas
+          </h3>
+          <AddButton 
+            align="right" 
+            onClick={() => setIsCreateListModalOpened(true)}
+          >
+            + criar lista
+          </AddButton>
+        </div>
         <div className="list-buttons">
-          <ListButton 
-            title="Lista diária" 
-            description="Lista de tarefas de uma data escolhida"
-            iconSrc="/images/calendar.svg"
-          />
-          <ListButton 
-            title="Minha lista" 
-            description="Lista criada ao clicar no botão de criar lista"
-            iconSrc="/images/book.svg"
-          />
+          {
+            lists === null
+              ?  (
+                <div className="loading-container">
+                  <Loading />
+                </div>
+              ) : lists.map((list) => (
+                <ListButton
+                  selected={list.id === listId}
+                  title={list.title}
+                  description={list.description}
+                  iconSrc={`/images/${list.icon || 'calendar'}.svg`}
+                  onClick={() => changeList(list.id)}
+                />
+              ))
+          }
         </div>
       </Menu>
-      <div className="cards-section">
-        <CardColumn
-          title="Para fazer"
-          variant="to-do"
-        >
-          {
-            todoCards.map((item) => (
-              <Card
-                title={item.title} 
-                description={item.description} 
-                variant="to-do"
-              />
-            ))
-          }
-        </CardColumn>
-        <CardColumn
-          title="Para fazer"
-          variant="in-progress"
-        >
-          {
-            inProgressCards.map((item) => (
-              <Card 
-                title={item.title} 
-                description={item.description} 
-                variant="in-progress"
-              />
-            ))
-          }
-        </CardColumn>
-        <CardColumn
-          title="Para fazer"
-          variant="done"
-        >
-          {
-            doneCards.map((item) => (
-              <Card 
-                title={item.title} 
-                description={item.description} 
-                variant="done"
-              />
-            ))
-          }
-        </CardColumn>  
-      </div>
+      <Cards tasks={tasks} listId={listId} refetch={fetchTasks} />
+
+      {
+        isCreateListModalOpened
+          ? (
+            <AddListModal
+              isOpened={isCreateListModalOpened}
+              close={() => setIsCreateListModalOpened(false)}
+              refetch={fetchLists}
+            />
+          ) : null
+      }
     </div>
   )
 }

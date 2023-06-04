@@ -15,8 +15,40 @@
   gap: 32px;
 }
 
+.lists-header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 1.5rem 0;
+}
+
 .list-buttons {
+  height: 20rem;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   gap: 32px;
+}
+
+.list-buttons::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list-buttons::-webkit-scrollbar-track {
+  background: #F0F0F0;
+}
+
+.list-buttons::-webkit-scrollbar-thumb {
+  background-color: #CACACA;
+  border-radius: 999px;
+  border: 1px solid #F0F0F0;
+}
+
+.loading-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
