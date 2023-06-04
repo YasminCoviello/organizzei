@@ -4,26 +4,51 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
 import { DateProvider } from "../contexts/date-context";
+import { PrivateRoute } from "./PrivateRoute";
+import { UnloggedRoute } from "./UnloggedRoute";
+import UpdatePassword from "../pages/UpdatePassword";
 
 const router = createBrowserRouter([
   {
     path: "/register",
-    element: <Register />
+    element: (
+      <UnloggedRoute>
+        <Register />
+      </UnloggedRoute>
+    )
   },
   {
     path: "/login",
-    element: <Login />
+    element: (
+      <UnloggedRoute>
+        <Login />
+      </UnloggedRoute>
+    )
   },
   {
     path: "/password-recovery",
-    element: <PasswordRecovery />,
+    element: (
+      <UnloggedRoute>
+        <PasswordRecovery />,
+      </UnloggedRoute>
+    ) 
+  },
+  {
+    path: "/update-password",
+    element: (
+      <UnloggedRoute>
+        <UpdatePassword />,
+      </UnloggedRoute>
+    ) 
   },
   {
     path: "/",
     element: (
-      <DateProvider>
-        <Home />,
-      </DateProvider>
+      <PrivateRoute>
+        <DateProvider>
+          <Home />,
+        </DateProvider>
+      </PrivateRoute>
     )},
 ]);
 

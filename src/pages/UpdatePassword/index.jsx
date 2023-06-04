@@ -1,33 +1,29 @@
 import React, { useContext, useState } from 'react';
 import FormPageContainer from '../../partials/FormPageContainer';
-import './styles.css';
-import { AuthContext } from '../../contexts/auth-context';
 import api from '../../modules/api';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function UpdatePassword() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const { login } = useContext(AuthContext);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   async function onSubmit(ev) {
     ev.preventDefault();
 
     try {
-      const { data: user } = await api.post('/user/login', { email, password });
+      await api.post('/user/update-password', { email, oldPassword, newPassword });
 
-      login(user);
-
-      navigate('/');
+      navigate('/login');
     } catch(e) {
-      if(e.response.status >= 400 && e.response.status < 500) toast.error('Credenciais de acesso inválidas!');
+      if(e.response.status >= 400 && e.response.status < 500) toast.error('Credenciais inválidas! Não foi possível alterar.');
       if(e.response.status >= 500) toast.error('Ocorreu algum problema interno!');
 
-      setPassword('');
+      setNewPassword('');
+      setOldPassword('');
     }
   }
 
@@ -50,7 +46,7 @@ function Login() {
       </div>
       <div className="input-label">
         <label htmlFor="input-password">
-          Senha
+          Senha antiga
         </label>
         <input 
           type="password" 
@@ -58,17 +54,27 @@ function Login() {
           name="password" 
           className="input"  
           placeholder="**********" 
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={oldPassword}
+          onChange={(e) => setOldPassword(e.target.value)}
           required
         />
       </div>
-      <a 
-        className="button contained forgot-password"
-        href="/password-recovery"
-      >
-        Esqueci minha senha
-      </a>
+      <div className="input-label">
+        <label htmlFor="input-new-password">
+          Nova senha
+        </label>
+        <input 
+          type="password" 
+          id="input-new-password" 
+          name="password" 
+          className="input"  
+          placeholder="**********" 
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          required
+        />
+      </div>
+
       <button type="submit" className="button">
        Entrar
       </button>
@@ -82,5 +88,5 @@ function Login() {
   );
 }
 
-export default Login;
+export default UpdatePassword;
 

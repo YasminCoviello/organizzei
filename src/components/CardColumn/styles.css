@@ -1,6 +1,7 @@
 .card-column {
   padding: 16px;
-  width: 368px;
+  min-width: 368px;
+  max-width: 368px;
   box-shadow: 0 0 4px 2px rgba(0, 0, 0, .1);
   height: max-content;
 }
@@ -23,7 +24,6 @@
   margin-bottom: .75rem;
 }
 
-
 .card-column.to-do {
   background-color: rgba(0, 168, 255, .05);
 }
@@ -36,7 +36,7 @@
   background-color: rgba(0, 255, 0, .05);
 }
 
-.card-column h3 {
+.card-column-header > h3 {
   margin-bottom: 16px;
 }
 

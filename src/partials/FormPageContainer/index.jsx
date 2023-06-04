@@ -11,7 +11,7 @@ function FormPageContainer(props) {
         />
       </div>
       <div className="container">
-        <form className="form">
+        <form className="form" onSubmit={props.onSubmit}>
           <img 
             src="/images/logo.png"
           />

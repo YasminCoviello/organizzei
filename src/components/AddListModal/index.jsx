@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Modal } from "../Modal";
 import './styles.css';
 import api from "../../modules/api";
+import { AuthContext } from "../../contexts/auth-context";
 
 export function AddListModal(props) {
+  const { user } = useContext(AuthContext); 
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
+  const headers = {
+    email: user.email
+  }
+
   async function submit() {
-    await api.post(`/list`, { title, description, icon: 'calendar' });
+    await api.post(`/list`, { title, description, icon: 'calendar' }, { headers });
     await props.refetch();
     props.close();
   }

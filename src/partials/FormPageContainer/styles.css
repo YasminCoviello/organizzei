@@ -6,6 +6,10 @@
 
 .left {
   width: 50%;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 }
 
 .background {
@@ -20,6 +24,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: .75rem;
+  }
 }
 
 .form {

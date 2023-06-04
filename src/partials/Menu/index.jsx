@@ -3,15 +3,26 @@ import Divider from '../../components/Divider';
 import Profile from '../../components/Profile';
 import './styles.css';
 import { DateContext } from '../../contexts/date-context';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../contexts/auth-context';
 
 function Menu(props) {
   const { setDate } = useContext(DateContext);
+  const { user, logout } = useContext(AuthContext);
+
+  const [isOpened, setIsOpened] = useState(true);
+
+  const toggleIsOpened = () => setIsOpened(prev => !prev);
 
   return (
-    <div className="menu-wrapper">
+    <div className={`menu-wrapper opened-${isOpened}`}>
       <div className="top-content">
-        <img src="/images/logo.png" alt="Organizzei" />
+        <div className="logo-and-action">
+          <img src="/images/logo.png" alt="Organizzei" />
+          <button className={`drawer-action opened-${isOpened}`} onClick={toggleIsOpened}>
+            <img src="/images/arrow-left.svg" alt="Arrow" />
+          </button>
+        </div>
         <Calendar onChange={setDate} className="menu-calendar" />
         <br/>
         <Divider />
@@ -19,9 +30,10 @@ function Menu(props) {
         {props.children}
       </div>
       <Profile
-        name="Marciane Vulcão"
-        email="amarciane@gmail.com"
-        pictureUrl="https://media.licdn.com/dms/image/D4D03AQEpfLPNouEGIA/profile-displayphoto-shrink_200_200/0/1673219139609?e=1686787200&v=beta&t=dCpTq6KP89ajN5OXSgUArjI4Vc6R7r3ievIgC2sQnug"
+        onClick={logout}
+        name={user.name}
+        email={user.email}
+        pictureUrl={user.imgSrc}
       />
     </div>
   )

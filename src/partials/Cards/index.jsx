@@ -1,29 +1,36 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AddTaskModal } from "../../components/AddTaskModal";
 import Card from "../../components/Card";
 import CardColumn from "../../components/CardColumn";
 import { Loading } from "../../components/Loading";
 import api from "../../modules/api";
+import { AuthContext } from "../../contexts/auth-context";
 
 export function Cards(props) {
   const [isModalOpened, setIsModalOpened] = useState(false);
+
+  const { user } = useContext(AuthContext);
+
+  const headers = {
+    email: user.email
+  }
 
   function getTasksOfColumn(column) {
     return props.tasks?.filter(task => task.currentColumn === column);
   }
 
   async function advanceCard(cardId) {
-    await api.put(`/list/${props.listId}/task/${cardId}/advance`);
+    await api.put(`/list/${props.listId}/task/${cardId}/advance`, null, { headers });
     await props.refetch();
   }
 
   async function returnCard(cardId) {
-    await api.put(`/list/${props.listId}/task/${cardId}/return`);
+    await api.put(`/list/${props.listId}/task/${cardId}/return`, null, { headers });
     await props.refetch();
   }
 
   async function deleteCard(cardId) {
-    await api.delete(`/list/${props.listId}/task/${cardId}`);
+    await api.delete(`/list/${props.listId}/task/${cardId}`, { headers });
     await props.refetch();
   }
 
@@ -105,7 +112,12 @@ export function Cards(props) {
           ))
         }
 
-        <AddTaskModal isOpened={isModalOpened} close={closeModal} refetch={props.refetch} listId={props.listId} />
+        <AddTaskModal 
+          isOpened={isModalOpened} 
+          close={closeModal} 
+          refetch={props.refetch} 
+          listId={props.listId} 
+        />
       </CardColumn>  
     </div>
   )

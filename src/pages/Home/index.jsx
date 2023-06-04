@@ -8,25 +8,31 @@ import { Loading } from "../../components/Loading";
 import { Cards } from "../../partials/Cards";
 import { AddListModal } from "../../components/AddListModal";
 import { DateContext } from "../../contexts/date-context";
+import { AuthContext } from "../../contexts/auth-context";
 
 function Home() {
   const { date } = useContext(DateContext);
+  const { user } = useContext(AuthContext);
 
   const [listId, setListId] = useState(null);
   const [lists, setLists] = useState(null);
   const [tasks, setTasks] = useState(null);
   const [isCreateListModalOpened, setIsCreateListModalOpened] = useState(false);
-  
+
   async function fetchLists() {
-    const { data: lists } = await api.get('list');
+    const { data: lists } = await api.get('list', { headers: { email: user?.email } });
 
     setLists(lists);
   }
 
   async function fetchTasks() {
-    const { data: cards } = await api.get(`list/${listId}/task?date=${date}`);
-
-    setTasks(cards);
+    try {
+      const { data: cards } = await api.get(`list/${listId}/task?date=${date}`, { headers: { email: user?.email } });
+  
+      setTasks(cards);
+    } catch(e) {
+      setTasks([]);
+    }
   }
 
   function changeList(listId) {
@@ -35,7 +41,6 @@ function Home() {
 
   useEffect(() => {
     fetchLists();
-    fetchTasks();
   }, []);
 
   useEffect(() => {

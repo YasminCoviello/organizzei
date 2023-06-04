@@ -3,17 +3,23 @@ import { Modal } from "../Modal";
 import './styles.css';
 import api from "../../modules/api";
 import { DateContext } from "../../contexts/date-context";
+import { AuthContext } from "../../contexts/auth-context";
 
 export function AddTaskModal(props) {
   const { date } = useContext(DateContext);
+  const { user } = useContext(AuthContext);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
+  const headers = {
+    email: user.email
+  }
+
   async function submit() {
-    await api.post(`/list/${props.listId}/task`, { title, description, date });
+    await api.post(`/list/${props.listId}/task`, { title, description, date }, { headers });
     await props.refetch();
-    
+
     setTitle('');
     setDescription('');
 
