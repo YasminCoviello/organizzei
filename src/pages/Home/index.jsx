@@ -9,6 +9,7 @@ import { Cards } from "../../partials/Cards";
 import { AddListModal } from "../../components/AddListModal";
 import { DateContext } from "../../contexts/date-context";
 import { AuthContext } from "../../contexts/auth-context";
+import { toast } from 'react-hot-toast';
 
 function Home() {
   const { date } = useContext(DateContext);
@@ -37,6 +38,15 @@ function Home() {
 
   function changeList(listId) {
     setListId(listId);
+  }
+
+  async function deleteList(listId) {
+    try {
+      await api.delete(`list/${listId}`, { headers: { email: user?.email } });
+      await fetchLists();
+    } catch(e) {
+      toast.error("Não foi possível apagar sua lista");
+    }
   }
 
   useEffect(() => {
@@ -82,6 +92,7 @@ function Home() {
                   description={list.description}
                   iconSrc={`/images/${list.icon || 'calendar'}.svg`}
                   onClick={() => changeList(list.id)}
+                  deleteList={() => deleteList(list.id)}
                 />
               ))
           }
